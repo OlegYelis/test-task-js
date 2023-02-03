@@ -2,11 +2,12 @@
   <div class="actions">
     <div class="input-wrapper">
       <label for="storage-input"
-        >Storage: <span class="storage__value">100</span>GB</label
+        >Storage: <span class="storage__value">50</span>GB</label
       >
       <input
         id="storage-input"
         type="range"
+        class="input__range"
         min="0"
         max="1000"
         step="1"
@@ -19,11 +20,12 @@
 
     <div class="input-wrapper">
       <label for="transfer-input"
-        >Transfer: <span class="transfer__value">100</span>GB</label
+        >Transfer: <span class="transfer__value">50</span>GB</label
       >
       <input
         id="transfer-input"
         type="range"
+        class="input__range"
         min="0"
         max="1000"
         step="1"
@@ -40,64 +42,72 @@
       <li class="companies__item">
         bunny
         <div class="bunny__storage">
-          <input
-            type="radio"
-            id="HDD"
-            name="bunny-storage"
-            value="hdd"
-            checked
-            onchange="inputHandler()"
-          />
-          <label for="HDD">HDD</label>
-          <input
-            type="radio"
-            id="SSD"
-            name="bunny-storage"
-            value="ssd"
-            onchange="inputHandler()"
-          />
-          <label for="SSD">SSD</label>
+          <div>
+            <input
+              type="radio"
+              id="HDD"
+              name="bunny-storage"
+              value="hdd"
+              checked
+              onchange="inputHandler()"
+            />
+            <label for="HDD">HDD</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="SSD"
+              name="bunny-storage"
+              value="ssd"
+              onchange="inputHandler()"
+            />
+            <label for="SSD">SSD</label>
+          </div>
         </div>
       </li>
       <li class="companies__item">
         scaleway
         <div class="scaleway__storage">
-          <input
-            type="radio"
-            id="Multi"
-            name="scaleway-storage"
-            value="Multi"
-            checked
-            onchange="inputHandler()"
-          />
-          <label for="Multi">Multi</label>
-          <input
-            type="radio"
-            id="Single"
-            name="scaleway-storage"
-            value="Single"
-            onchange="inputHandler()"
-          />
-          <label for="Single">Single</label>
+          <div>
+            <input
+              type="radio"
+              id="Multi"
+              name="scaleway-storage"
+              value="Multi"
+              checked
+              onchange="inputHandler()"
+            />
+            <label for="Multi">Multi</label>
+          </div>
+          <div>
+            <input
+              type="radio"
+              id="Single"
+              name="scaleway-storage"
+              value="Single"
+              onchange="inputHandler()"
+            />
+            <label for="Single">Single</label>
+          </div>
         </div>
       </li>
       <li class="companies__item">vultr</li>
     </ul>
     <div class="result">
       <div class="diagram__wrapper">
-        <div class="diagram blackblaze"></div>
+        <div class="diagram blackblaze" style="width: 24px"></div>
         <span class="blackblaze__value">7$</span>
       </div>
       <div class="diagram__wrapper">
-        <div class="diagram bunny"></div>
+        <div class="diagram bunny" style="width: 12px"></div>
         <span class="bunny__value">1$</span>
       </div>
       <div class="diagram__wrapper">
-        <div class="diagram scaleway"></div>
+        <div class="diagram scaleway min_cost" style="width: 10px"></div>
         <span class="scaleway__value">0$</span>
       </div>
       <div class="diagram__wrapper">
-        <div class="diagram vultr"></div>
+        <div class="diagram vultr" style="width: 20px"></div>
         <span class="vultr__value">5$</span>
       </div>
     </div>
@@ -162,5 +172,43 @@
     bunnySpanEl.textContent = `${bunnyValue}$`;
     scalewaySpanEl.textContent = `${scalewayValue}$`;
     vultrSpanEl.textContent = `${vultrValue}$`;
+
+    blackblazeEl.style.width = `${+blackblazeValue * 2 + 10}px`;
+    bunnyEl.style.width = `${+bunnyValue * 2 + 10}px`;
+    scalewayEl.style.width = `${+scalewayValue * 2 + 10}px`;
+    vultrEl.style.width = `${+vultrValue * 2 + 10}px`;
+
+    const costArr = [
+      +blackblazeValue,
+      +bunnyValue,
+      +scalewayValue,
+      +vultrValue,
+    ];
+
+    const minValue = Math.min(...costArr);
+    const indexOfMinValue = costArr.indexOf(minValue);
+
+    let activeMinEl = document.querySelector('.min_cost');
+
+    if (activeMinEl) {
+      activeMinEl.classList.remove('min_cost');
+    }
+
+    switch (indexOfMinValue) {
+      case 0:
+        blackblazeEl.classList.add('min_cost');
+        break;
+      case 1:
+        bunnyEl.classList.add('min_cost');
+        break;
+      case 2:
+        scalewayEl.classList.add('min_cost');
+        break;
+      case 3:
+        vultrEl.classList.add('min_cost');
+        break;
+      default:
+        break;
+    }
   };
 </script>
