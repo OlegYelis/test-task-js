@@ -1,0 +1,79 @@
+.calculator {
+  width: 500px;
+  padding: 50px;
+  margin: 0 auto;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 50px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.min-value {
+  position: absolute;
+  top: 15px;
+  left: -3px;
+}
+
+.max-value {
+  position: absolute;
+  top: 15px;
+  right: -15px;
+}
+
+.diagrams {
+  display: flex;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  padding: 10px 0;
+}
+
+.companies__item:not(:last-child) {
+  margin-bottom: 30px;
+}
+
+.result {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px 0;
+  margin-left: 50px;
+  border-left: 3px solid black;
+}
+
+.diagram__wrapper {
+  display: flex;
+
+  &:not(:last-child) {
+    margin-bottom: 30px;
+  }
+}
+
+.diagram {
+  height: 20px;
+  width: 40px;
+  background-color: grey;
+  margin-right: 15px;
+}
+
+.bunny__storage {
+  position: absolute;
+}
+
+.scaleway__storage {
+  position: absolute;
+}

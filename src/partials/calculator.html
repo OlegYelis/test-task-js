@@ -1,0 +1,166 @@
+<section class="calculator">
+  <div class="actions">
+    <div class="input-wrapper">
+      <label for="storage-input"
+        >Storage: <span class="storage__value">100</span>GB</label
+      >
+      <input
+        id="storage-input"
+        type="range"
+        min="0"
+        max="1000"
+        step="1"
+        value="50"
+        oninput="inputHandler()"
+      />
+      <p class="min-value">0</p>
+      <p class="max-value">1000</p>
+    </div>
+
+    <div class="input-wrapper">
+      <label for="transfer-input"
+        >Transfer: <span class="transfer__value">100</span>GB</label
+      >
+      <input
+        id="transfer-input"
+        type="range"
+        min="0"
+        max="1000"
+        step="1"
+        value="50"
+        oninput="inputHandler()"
+      />
+      <p class="min-value">0</p>
+      <p class="max-value">1000</p>
+    </div>
+  </div>
+  <div class="diagrams">
+    <ul class="companies list">
+      <li class="companies__item">blackblaze</li>
+      <li class="companies__item">
+        bunny
+        <div class="bunny__storage">
+          <input
+            type="radio"
+            id="HDD"
+            name="bunny-storage"
+            value="hdd"
+            checked
+            onchange="inputHandler()"
+          />
+          <label for="HDD">HDD</label>
+          <input
+            type="radio"
+            id="SSD"
+            name="bunny-storage"
+            value="ssd"
+            onchange="inputHandler()"
+          />
+          <label for="SSD">SSD</label>
+        </div>
+      </li>
+      <li class="companies__item">
+        scaleway
+        <div class="scaleway__storage">
+          <input
+            type="radio"
+            id="Multi"
+            name="scaleway-storage"
+            value="Multi"
+            checked
+            onchange="inputHandler()"
+          />
+          <label for="Multi">Multi</label>
+          <input
+            type="radio"
+            id="Single"
+            name="scaleway-storage"
+            value="Single"
+            onchange="inputHandler()"
+          />
+          <label for="Single">Single</label>
+        </div>
+      </li>
+      <li class="companies__item">vultr</li>
+    </ul>
+    <div class="result">
+      <div class="diagram__wrapper">
+        <div class="diagram blackblaze"></div>
+        <span class="blackblaze__value">7$</span>
+      </div>
+      <div class="diagram__wrapper">
+        <div class="diagram bunny"></div>
+        <span class="bunny__value">1$</span>
+      </div>
+      <div class="diagram__wrapper">
+        <div class="diagram scaleway"></div>
+        <span class="scaleway__value">0$</span>
+      </div>
+      <div class="diagram__wrapper">
+        <div class="diagram vultr"></div>
+        <span class="vultr__value">5$</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const storageEl = document.getElementById('storage-input');
+  const storageValueEl = document.querySelector('.storage__value');
+  const transferEl = document.getElementById('transfer-input');
+  const transferValueEl = document.querySelector('.transfer__value');
+
+  const blackblazeEl = document.querySelector('.blackblaze');
+  const bunnyEl = document.querySelector('.bunny');
+  const scalewayEl = document.querySelector('.scaleway');
+  const vultrEl = document.querySelector('.vultr');
+
+  const blackblazeSpanEl = document.querySelector('.blackblaze__value');
+  const bunnySpanEl = document.querySelector('.bunny__value');
+  const scalewaySpanEl = document.querySelector('.scaleway__value');
+  const vultrSpanEl = document.querySelector('.vultr__value');
+
+  const bunnyHDDEl = document.getElementById('HDD');
+  const scalewayMultiEl = document.getElementById('Multi');
+
+  let storageValue = storageEl.value;
+  let transferValue = transferEl.value;
+
+  const inputHandler = () => {
+    storageValueEl.textContent = storageEl.value;
+    storageValue = storageEl.value;
+    transferValueEl.textContent = transferEl.value;
+    transferValue = transferEl.value;
+
+    let blackblazeValue = storageValue * 0.005 + transferValue * 0.01;
+    let bunnyValue = bunnyHDDEl.checked
+      ? storageValue * 0.01 + transferValue * 0.01
+      : storageValue * 0.02 + transferValue * 0.01;
+
+    let scalewayValue;
+    if (storageValue <= 75 && transferValue <= 75) {
+      scalewayValue = 0;
+    } else if (storageValue <= 75 && transferValue > 75) {
+      scalewayValue = (transferValue - 75) * 0.02;
+    } else if (storageValue > 75 && transferValue <= 75) {
+      scalewayValue = scalewayMultiEl.checked
+        ? (storageValue - 75) * 0.06
+        : (storageValue - 75) * 0.03;
+    } else {
+      scalewayValue = scalewayMultiEl.checked
+        ? (storageValue - 75) * 0.06 + (transferValue - 75) * 0.02
+        : (storageValue - 75) * 0.03 + (transferValue - 75) * 0.02;
+    }
+    let vultrValue = storageValue * 0.01 + transferValue * 0.01;
+
+    blackblazeValue = blackblazeValue < 7 ? 7 : blackblazeValue.toFixed(1);
+    bunnyValue = bunnyValue > 10 ? 10 : bunnyValue.toFixed(1);
+    scalewayValue = scalewayValue.toFixed(1);
+    vultrValue = vultrValue < 5 ? 5 : vultrValue.toFixed(1);
+
+    blackblazeSpanEl.textContent = `${blackblazeValue}$`;
+    bunnySpanEl.textContent = `${bunnyValue}$`;
+    scalewaySpanEl.textContent = `${scalewayValue}$`;
+    vultrSpanEl.textContent = `${vultrValue}$`;
+  };
+</script>
