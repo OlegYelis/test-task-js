@@ -12,7 +12,6 @@
         max="1000"
         step="1"
         value="50"
-        oninput="inputHandler()"
       />
       <p class="min-value">0</p>
       <p class="max-value">1000</p>
@@ -30,7 +29,6 @@
         max="1000"
         step="1"
         value="50"
-        oninput="inputHandler()"
       />
       <p class="min-value">0</p>
       <p class="max-value">1000</p>
@@ -57,18 +55,11 @@
               name="bunny-storage"
               value="hdd"
               checked
-              onchange="inputHandler()"
             />
             <label for="HDD">HDD</label>
           </div>
           <div>
-            <input
-              type="radio"
-              id="SSD"
-              name="bunny-storage"
-              value="ssd"
-              onchange="inputHandler()"
-            />
+            <input type="radio" id="SSD" name="bunny-storage" value="ssd" />
             <label for="SSD">SSD</label>
           </div>
         </div>
@@ -89,7 +80,6 @@
               name="scaleway-storage"
               value="Multi"
               checked
-              onchange="inputHandler()"
             />
             <label for="Multi">Multi</label>
           </div>
@@ -99,7 +89,6 @@
               id="Single"
               name="scaleway-storage"
               value="Single"
-              onchange="inputHandler()"
             />
             <label for="Single">Single</label>
           </div>
@@ -141,102 +130,3 @@
     </div>
   </div>
 </section>
-
-<script>
-  const storageEl = document.getElementById('storage-input');
-  const storageValueEl = document.querySelector('.storage__value');
-  const transferEl = document.getElementById('transfer-input');
-  const transferValueEl = document.querySelector('.transfer__value');
-
-  const blackblazeEl = document.querySelector('.blackblaze');
-  const bunnyEl = document.querySelector('.bunny');
-  const scalewayEl = document.querySelector('.scaleway');
-  const vultrEl = document.querySelector('.vultr');
-
-  const blackblazeSpanEl = document.querySelector('.blackblaze__value');
-  const bunnySpanEl = document.querySelector('.bunny__value');
-  const scalewaySpanEl = document.querySelector('.scaleway__value');
-  const vultrSpanEl = document.querySelector('.vultr__value');
-
-  const bunnyHDDEl = document.getElementById('HDD');
-  const scalewayMultiEl = document.getElementById('Multi');
-
-  let storageValue = storageEl.value;
-  let transferValue = transferEl.value;
-
-  const inputHandler = () => {
-    storageValueEl.textContent = storageEl.value;
-    storageValue = storageEl.value;
-    transferValueEl.textContent = transferEl.value;
-    transferValue = transferEl.value;
-
-    let blackblazeValue = storageValue * 0.005 + transferValue * 0.01;
-    let bunnyValue = bunnyHDDEl.checked
-      ? storageValue * 0.01 + transferValue * 0.01
-      : storageValue * 0.02 + transferValue * 0.01;
-
-    let scalewayValue;
-    if (storageValue <= 75 && transferValue <= 75) {
-      scalewayValue = 0;
-    } else if (storageValue <= 75 && transferValue > 75) {
-      scalewayValue = (transferValue - 75) * 0.02;
-    } else if (storageValue > 75 && transferValue <= 75) {
-      scalewayValue = scalewayMultiEl.checked
-        ? (storageValue - 75) * 0.06
-        : (storageValue - 75) * 0.03;
-    } else {
-      scalewayValue = scalewayMultiEl.checked
-        ? (storageValue - 75) * 0.06 + (transferValue - 75) * 0.02
-        : (storageValue - 75) * 0.03 + (transferValue - 75) * 0.02;
-    }
-    let vultrValue = storageValue * 0.01 + transferValue * 0.01;
-
-    blackblazeValue = blackblazeValue < 7 ? 7 : blackblazeValue.toFixed(1);
-    bunnyValue = bunnyValue > 10 ? 10 : bunnyValue.toFixed(1);
-    scalewayValue = scalewayValue.toFixed(1);
-    vultrValue = vultrValue < 5 ? 5 : vultrValue.toFixed(1);
-
-    blackblazeSpanEl.textContent = `${blackblazeValue}$`;
-    bunnySpanEl.textContent = `${bunnyValue}$`;
-    scalewaySpanEl.textContent = `${scalewayValue}$`;
-    vultrSpanEl.textContent = `${vultrValue}$`;
-
-    blackblazeEl.style.width = `${+blackblazeValue * 2 + 10}px`;
-    bunnyEl.style.width = `${+bunnyValue * 2 + 10}px`;
-    scalewayEl.style.width = `${+scalewayValue * 2 + 10}px`;
-    vultrEl.style.width = `${+vultrValue * 2 + 10}px`;
-
-    const costArr = [
-      +blackblazeValue,
-      +bunnyValue,
-      +scalewayValue,
-      +vultrValue,
-    ];
-
-    const minValue = Math.min(...costArr);
-    const indexOfMinValue = costArr.indexOf(minValue);
-
-    let activeMinEl = document.querySelector('.min_cost');
-
-    if (activeMinEl) {
-      activeMinEl.classList.remove('min_cost');
-    }
-
-    switch (indexOfMinValue) {
-      case 0:
-        blackblazeEl.classList.add('min_cost');
-        break;
-      case 1:
-        bunnyEl.classList.add('min_cost');
-        break;
-      case 2:
-        scalewayEl.classList.add('min_cost');
-        break;
-      case 3:
-        vultrEl.classList.add('min_cost');
-        break;
-      default:
-        break;
-    }
-  };
-</script>
